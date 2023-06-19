@@ -13,7 +13,27 @@
  */
 int State::evaluate(){
   // [TODO] design your own evaluation function
-  return 0;
+  const int pieceValues[7] = {1, 2, 10, 5, 3, 9, 10000};  // Piece values (pawn, rook, knight, bishop, queen, king)
+
+  int score = 0;
+
+  // player's pieces
+  for (int i = 0; i < BOARD_H; i++) {
+    for (int j = 0; j < BOARD_W; j++) {
+      int piece = this->board.board[this->player][i][j];
+      score += pieceValues[piece];
+    }
+  }
+
+  // opponent's pieces
+  for (int i = 0; i < BOARD_H; i++) {
+    for (int j = 0; j < BOARD_W; j++) {
+      int piece = this->board.board[1 - this->player][i][j];
+      score += pieceValues[piece];
+    }
+  }
+
+  return score;
 }
 
 
@@ -44,6 +64,7 @@ State* State::next_state(Move move){
   if(this->game_state != WIN)
     next_state->get_legal_actions();
   return next_state;
+  
 }
 
 
