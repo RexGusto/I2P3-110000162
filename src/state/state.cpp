@@ -15,13 +15,13 @@
 int State::evaluate(){
   // [TODO] design your own evaluation function
   int score = 0;
-  int board_val[7] = { 0, 2, 6, 7, 8, 20, 100};
+  int board_val[7] = { 0, 2, 6, 7, 8, 20, 100000};
   //0 = empty, 2 = pawn, 6 = rook, 7 = knight, 8 = bishop, 20 = queen, 100 = king
   for(int i = 1; i <= 6; i++){
     for(int j = 1; j <= 5; j++){
       int user = board_val[(int)this->board.board[player][i-1][j-1]];
       int opponent = board_val[(int)this->board.board[!player][i-1][j-1]];
-      score += user - opponent;
+      score += (user * 4) - opponent;
     }
   }
   return score;
