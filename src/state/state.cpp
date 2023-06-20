@@ -1,6 +1,7 @@
 #include <iostream>
 #include <sstream>
 #include <cstdint>
+#include <vector>
 
 #include "./state.hpp"
 #include "../config.hpp"
@@ -13,26 +14,16 @@
  */
 int State::evaluate(){
   // [TODO] design your own evaluation function
-  const int pieceValues[7] = {1, 2, 10, 5, 3, 9, 10000};  // Piece values (pawn, rook, knight, bishop, queen, king)
-
   int score = 0;
-
-  // player's pieces
-  for (int i = 0; i < BOARD_H; i++) {
-    for (int j = 0; j < BOARD_W; j++) {
-      int piece = this->board.board[this->player][i][j];
-      score += pieceValues[piece];
+  int board_val[7] = { 0, 2, 6, 7, 8, 20, 100};
+  //0 = empty, 2 = pawn, 6 = rook, 7 = knight, 8 = bishop, 20 = queen, 100 = king
+  for(int i = 1; i <= 6; i++){
+    for(int j = 1; j <= 5; j++){
+      int user = board_val[(int)this->board.board[player][i-1][j-1]];
+      int opponent = board_val[(int)this->board.board[!player][i-1][j-1]];
+      score += user - opponent;
     }
   }
-
-  // opponent's pieces
-  for (int i = 0; i < BOARD_H; i++) {
-    for (int j = 0; j < BOARD_W; j++) {
-      int piece = this->board.board[1 - this->player][i][j];
-      score += pieceValues[piece];
-    }
-  }
-
   return score;
 }
 
@@ -64,7 +55,6 @@ State* State::next_state(Move move){
   if(this->game_state != WIN)
     next_state->get_legal_actions();
   return next_state;
-  
 }
 
 

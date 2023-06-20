@@ -39,31 +39,17 @@ void read_board(std::ifstream& fin) {
  * @param fout
  */
 void write_valid_spot(std::ofstream& fout) {
-	if(!root->legal_actions.size()){
-        root->get_legal_actions();
-    }
-    int result;
-	int maximum = -1000000000;
-	int minimum = 1000000000;
-    // Keep updating the output until getting killed.
-    Move move;
-    for (auto& it : root->legal_actions) {
-        result = MinMax::Minmax(root->next_state(it), 6, minimum, maximum, false);
-        if (result >= maximum) {
-            maximum = result;
-            move = it;
-        }
-        if (move.first == move.second) {
-            move = root->legal_actions[0];
-        }
-        // Choose a random spot.
-        fout << move.first.first << " " << move.first.second << " "\
-            << move.second.first << " " << move.second.second << std::endl;
-
-        // Remember to flush the output to ensure the last action is written to file.
-        fout.flush();
-        break;
-    }
+  // Keep updating the output until getting killed.
+  while(true) {
+    // Choose a random spot.
+    auto move = Minimax::get_move(root, 6);
+    fout << move.first.first << " " << move.first.second << " "\
+         << move.second.first << " " << move.second.second << std::endl;
+    
+    // Remember to flush the output to ensure the last action is written to file.
+    fout.flush();
+    break;
+  }
 }
 
 
